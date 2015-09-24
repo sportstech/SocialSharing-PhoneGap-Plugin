@@ -676,9 +676,8 @@
 }
 
 + (NSData*) dataFromBase64String:(NSString*)aString {
-  size_t outputLength = 0;
-  void* outputBuffer = CDVNewBase64Decode([aString UTF8String], [aString length], &outputLength);
-  return [NSData dataWithBytesNoCopy:outputBuffer length:outputLength freeWhenDone:YES];
+  NSData *data = [[NSData alloc] initWithBase64EncodedString:aString options:0];
+  return data;
 }
 
 #pragma mark - UIPopoverControllerDelegate methods
