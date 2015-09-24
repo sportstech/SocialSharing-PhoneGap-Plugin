@@ -27,10 +27,16 @@
 }
 
 - (NSString*)getIPadPopupCoordinates {
-  if (_popupCoordinates != nil) {
-    return _popupCoordinates;
-  }
-  return [self.webView stringByEvaluatingJavaScriptFromString:@"window.plugins.socialsharing.iPadPopupCoordinates();"];
+#if CORDOVA_VERSION_MIN_REQUIRED >= __CORDOVA_4_0_0
+    // do something when its at least 4.0.0
+    return nil;
+#else
+    // do something else (non 4.0.0)
+    if (_popupCoordinates != nil) {
+        return _popupCoordinates;
+    }
+    return [self.webViewEngine evaluateJavaScript:@"window.plugins.socialsharing.iPadPopupCoordinates();"];
+#endif
 }
 
 - (void)setIPadPopupCoordinates:(CDVInvokedUrlCommand*)command {
