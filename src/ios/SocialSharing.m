@@ -475,7 +475,7 @@
   // which is of course better than Instagram sharing not working at all because you forgot to whitelist it.
   // Tradeoff: on iOS9 this method will always return true, so make sure to whitelist it and call canShareVia('instagram'..)
   if (!IsAtLeastiOSVersion(@"9.0")) {
-    if ([self canShareViaInstagram]) {
+    if (![self canShareViaInstagram]) {
       CDVPluginResult * pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"not available"];
       [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
       return;
@@ -523,7 +523,7 @@
   // which is of course better than WhatsApp sharing not working at all because you forgot to whitelist it.
   // Tradeoff: on iOS9 this method will always return true, so make sure to whitelist it and call canShareVia('whatsapp'..)
   if (!IsAtLeastiOSVersion(@"9.0")) {
-    if ([self canShareViaWhatsApp]) {
+    if (![self canShareViaWhatsApp]) {
       CDVPluginResult * pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"not available"];
       [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
       return;
@@ -567,6 +567,7 @@
     NSString * encodedShareString = [shareString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     // also encode the '=' character
     encodedShareString = [encodedShareString stringByReplacingOccurrencesOfString:@"=" withString:@"%3D"];
+    encodedShareString = [encodedShareString stringByReplacingOccurrencesOfString:@"&" withString:@"%26"];
     NSString * encodedShareStringForWhatsApp = [NSString stringWithFormat:@"whatsapp://send?text=%@", encodedShareString];
 
     NSURL *whatsappURL = [NSURL URLWithString:encodedShareStringForWhatsApp];
